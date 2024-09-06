@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #003366;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #003366;
+            text-align: center;
+        }
+        .booking-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .booking-card h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        .booking-card p {
+            margin: 0;
+            color: #333;
+        }
+        .booking-card .status {
+            font-weight: bold;
+            color: #d9534f; /* Red for Cancelled */
+        }
+        .booking-card .status.confirmed {
+            color: #5bc0de; /* Blue for Confirmed */
+        }
+        .booking-card .status.completed {
+            color: #5cb85c; /* Green for Completed */
+        }
+        .booking-card a {
+            text-decoration: none;
+            color: #00509e;
+            font-weight: bold;
+        }
+        .booking-card a:hover {
+            text-decoration: underline;
+        }
+        .no-bookings {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        .back-link {
+            display: block;
+            margin: 2rem auto;
+            text-align: center;
+            font-size: 1rem;
+            color: #00509e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Bookings</h1>
+    </header>
+    <div class="container">
+        {% if bookings %}
+            {% for booking in bookings %}
+                <div class="booking-card">
+                    <h2>{{ booking.travel_option.type }}</h2>
+                    <p><strong>From:</strong> {{ booking.travel_option.source }}</p>
+                    <p><strong>To:</strong> {{ booking.travel_option.destination }}</p>
+                    <p><strong>Date:</strong> {{ booking.travel_option.date_time }}</p>
+                    <p><strong>Seats:</strong> {{ booking.number_of_seats }}</p>
+                    <p><strong>Status:</strong> <span class="status {% if booking.status == 'Confirmed' %}confirmed{% elif booking.status == 'Completed' %}completed{% else %}cancelled{% endif %}">{{ booking.status }}</span></p>
+                    {% if booking.status != 'Cancelled' %}
+                        <a href="{% url 'cancel_booking' booking.id %}">Cancel Booking</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-bookings">You have no bookings.</p>
+        {% endif %}
+        <a href="{% url 'travel_list' %}" class="back-link">Back to Travel List</a>
+    </div>
+</body>
+</html>

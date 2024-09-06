@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Travel</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .booking-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .booking-card h1 {
+            margin-bottom: 20px;
+        }
+        .booking-card p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="booking-card">
+            <h1 class="text-center">Book Travel</h1>
+            <p class="text-center">
+                <strong>{{ travel.type }}</strong><br>
+                From: {{ travel.source }}<br>
+                To: {{ travel.destination }}<br>
+                Date & Time: {{ travel.date_time }}<br>
+                Price: ${{ travel.price }}
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="number_of_seats">Number of Seats:</label>
+                    <input type="number" class="form-control" id="number_of_seats" name="number_of_seats" min="1" max="{{ travel.available_seats }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+            <div class="footer-link">
+                <a href="{% url 'travel_list' %}">Back to Travel List</a>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
